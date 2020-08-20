@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 @RequestMapping("/post")
@@ -32,7 +33,7 @@ public class PostController {
 		return  postRepository.findAll(pageRequest);
 	}
 	@RequestMapping(value="/detail/{id}", method=RequestMethod.GET)
-	public Post getPostDetail(@PathVariable Integer id) {
+	public Post getPostDetail(@PathVariable Long id) {
 		try {
 			Post postDetail = postRepository.findOne(id);
 			if(postDetail != null) {
@@ -53,8 +54,10 @@ public class PostController {
 	
 	@RequestMapping(value="/write", method=RequestMethod.POST)
 	public String createPost(Post post,RedirectAttributes redirectAttributes) {
+//	public String createPost(Post post,MultipartFile[] file) {
 		try {
 			Post createdPost = postService.save(post,null);
+//			Post createdPost = postService.save(post,file);
 //			return createdPost;
 			return "redirect:/post/list";
 		} catch (Exception e) {
@@ -64,7 +67,7 @@ public class PostController {
 	}
 	
 	@RequestMapping(value="/update/{id}", method=RequestMethod.PUT)
-	public Post updatePost(@PathVariable Integer id, @RequestBody Post updatePost) {
+	public Post updatePost(@PathVariable Long id, @RequestBody Post updatePost) {
 		try {
 			Post post = postRepository.findOne(id);
 			if(post != null) {
@@ -81,7 +84,7 @@ public class PostController {
 	}
 	
 	@RequestMapping(value="/delete/{id}", method=RequestMethod.DELETE)
-	public String deletePost(@PathVariable Integer id) {
+	public String deletePost(@PathVariable Long id) {
 		try {
 			postRepository.delete(id);
 			return "delete success";

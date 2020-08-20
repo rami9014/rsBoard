@@ -29,7 +29,7 @@ public class PostAuthInterceptor implements HandlerInterceptor {
         if(httpMethod.equals("UPDATE") || httpMethod.equals("DELETE")) {
             String sessionItem = (String)request.getSession().getAttribute(Session.SESSION_ID);
             Map<?, ?> pathVariables = (Map<?, ?>) request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
-            Integer id = Integer.parseInt((String)pathVariables.get("id"));
+            Long id = Long.parseLong((String)pathVariables.get("id"));
 
             Post post = postRepository.findOne(id);
             String postWriter = post.getCreatedBy();

@@ -44,10 +44,10 @@ public class UserController {
 	}
 	
 	@RequestMapping(value="/login", method=RequestMethod.POST)
-	public String login(@RequestBody User account,HttpSession session) {
+	public String login(@RequestBody User user,HttpSession session) {
 		try {
-			String username = account.getUsername();
-			String password = Hashing.hashingPassword(account.getPassword());
+			String username = user.getUsername();
+			String password = Hashing.hashingPassword(user.getPassword());
 			User userInfo = userRepository.findByUsernameAndPassword(username, password);
 			
 			if(userInfo != null) {
@@ -64,8 +64,22 @@ public class UserController {
 	}
 	
 	@RequestMapping(value="/logout", method=RequestMethod.GET)
-	public String logout (HttpSession session) {
+	public String logout (HttpSession session) {		
 		session.removeAttribute(Session.SESSION_ID);
+		return "redirect:/";
+	}
+	
+	@RequestMapping(value="/delete", method=RequestMethod.DELETE)
+	public String delete (@RequestBody User user,HttpSession session) {
+		String username = user.getUsername();
+		String password = Hashing.hashingPassword(user.getPassword());
+		User userInfo = userRepository.findByUsernameAndPassword(username, password);
+		
+		if(userInfo != null) {
+			session.setAttribute(Session.SESSION_ID, userInfo);
+			userRepository.delete(userInfo.getId());
+			session.removeAttribute(Session.SESSION_ID);
+		}
 		return "redirect:/";
 	}
 	
