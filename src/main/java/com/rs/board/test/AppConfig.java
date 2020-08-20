@@ -50,11 +50,11 @@ public class AppConfig implements WebMvcConfigurer{
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(loginInterceptor)
-        		.excludePathPatterns("/post/page")
-                .addPathPatterns("/post/**");
+        		.excludePathPatterns("/user/register")
+                .addPathPatterns("/user/**");
         
         registry.addInterceptor(postAuthInterceptor)
-        		.excludePathPatterns("/post/page")
+        		.excludePathPatterns("/post/list")
         		.addPathPatterns("/post/**");
     }
 

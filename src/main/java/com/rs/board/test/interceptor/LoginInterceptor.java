@@ -17,13 +17,16 @@ public class LoginInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
-        HttpSession httpSession = request.getSession();
-        String sessionItem = (String)httpSession.getAttribute(Session.SESSION_ID);
+        String httpMethod = request.getMethod();
 
-//        if(sessionItem == null){
-//            response.getOutputStream().println("login fail");
-//            return false;
-//        }
+        if(httpMethod.equals("UPDATE") || httpMethod.equals("DELETE")) {
+        	HttpSession httpSession = request.getSession();
+            String sessionItem = (String)httpSession.getAttribute(Session.SESSION_ID);	
+            if(sessionItem == null){
+                response.getOutputStream().println("login fail");
+                return false;
+            }	
+        }        
         return true;
     }
 

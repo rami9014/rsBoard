@@ -69,6 +69,17 @@ public class UserController {
 		return "redirect:/";
 	}
 	
+	@RequestMapping(value="/update", method=RequestMethod.PUT)
+	public String update(@RequestBody User user,HttpSession session) {
+		try {
+			userRepository.save(user);
+			return "success";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
 	@RequestMapping(value="/delete", method=RequestMethod.DELETE)
 	public String delete (@RequestBody User user,HttpSession session) {
 		String username = user.getUsername();
